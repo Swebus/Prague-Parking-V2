@@ -259,7 +259,7 @@ namespace Prague_Parking_V2
                 }
 
                 Console.WriteLine($"Parking duration: {parkingDuration.TotalMinutes:F1} minutes.");
-                Console.WriteLine($"Parking cost: {price}CZK");
+                Console.WriteLine($"Parking cost: {price:F2}CZK");
 
                 // Bekräfta om användaren vill ta bort fordonet
                 Console.WriteLine("Do you want to retrieve and remove the vehicle?");
@@ -378,7 +378,7 @@ namespace Prague_Parking_V2
                         TimeSpan duration = currentTime - vehicle.ParkingTime;
                         double price = CalculateParkingCost(vehicle, duration);
 
-                        Console.WriteLine($" Vehicle found in parkingspot {i + 1}.");
+                        Console.WriteLine($" Vehicle found in parkingspot {i}.");
                         Console.WriteLine($" Park Duration:{duration.TotalMinutes:F1} minutes");
                         Console.WriteLine($" Parking Cost {price:F2} CZK");
                         found = true;
@@ -395,8 +395,8 @@ namespace Prague_Parking_V2
             double CalculateParkingCost(Vehicle vehicle, TimeSpan duration)
             {
                 const double freetime = 10;
-                const double hourlyRateCar = 20.0;
-                const double hourlyRateMc = 10.0;
+                //const double hourlyRateCar = 20.0;
+                //const double hourlyRateMc = 10.0;
 
                 if (duration.TotalMinutes <= freetime)
                 {
@@ -404,15 +404,12 @@ namespace Prague_Parking_V2
                 }
                 else
                 {
-                    double rate = vehicle is Car ? hourlyRateCar : hourlyRateMc;
+                    double rate = vehicle is Car ? pragueParking.CarPrize : pragueParking.McPrize;
                     return ((duration.TotalMinutes - freetime) / 60) * rate;
 
                 }
 
             }
-
-
-
             void ShowParkingSpaces()
             {
 
@@ -598,5 +595,4 @@ namespace Prague_Parking_V2
             }
         }
     }
-
 }
