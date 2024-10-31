@@ -46,7 +46,6 @@ namespace Prague_Parking_V2
 
                 TablePriceMeny();
 
-
                 // Main menu selections
                 var selection = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
@@ -56,12 +55,11 @@ namespace Prague_Parking_V2
             "Get Vehicle",
             "Move Vehicle",
             "Find Vehicle",
-            "Reload Config File",
-            "Clear Garage",
             "Show Detailed Spaces",
+            "Clear Garage",
+            "Reload Config File",
             "Close Program",
                         }));
-
 
                 // Selection switch
                 switch (selection)
@@ -192,13 +190,7 @@ namespace Prague_Parking_V2
                         return regNumber;
                     }
                 }
-
-
             }
-            //bool ContainsSpecialCharacters(string regNumber)
-            //{
-            //    return Regex.IsMatch(regNumber, @"[^\p{L}\p{N}]");
-            //}
             void GetVehicle()
             {
                 string regNumber;
@@ -214,7 +206,8 @@ namespace Prague_Parking_V2
                         AnsiConsole.Write(table2);
                         return;
                     }
-                } while (string.IsNullOrEmpty(regNumber));
+                } 
+                while (string.IsNullOrEmpty(regNumber));
 
                 // Leta upp fordonet i parkeringsplatserna
                 ParkingSpot currentSpot = null;
@@ -236,7 +229,9 @@ namespace Prague_Parking_V2
 
                 if (currentSpot == null || vehicleToRemove == null)
                 {
-                    Console.WriteLine($"No vehicle with registration number {regNumber} found.");
+                    var table2 = new Table();
+                    table2.AddColumn("[yellow]Vehicle not found. Returning to main menu. [/]");
+                    AnsiConsole.Write(table2);
                     return;
                 }
 
@@ -284,7 +279,7 @@ namespace Prague_Parking_V2
 
                 do
                 {
-                    Console.WriteLine("Enter Registration Number:  ");
+                    Console.WriteLine("Enter registration number:  ");
                     regNumber = Console.ReadLine().Trim();
                     if (string.IsNullOrEmpty(regNumber))
                     {
@@ -313,17 +308,15 @@ namespace Prague_Parking_V2
                         break;
                     }
                 }
-
                 if (currentSpot == null)
                 {
-
                     var table3 = new Table();
                     table3.AddColumn($"[yellow]Vehicle with registration nummber {regNumber} not found.[/]");
                     AnsiConsole.Write(table3);
                     return;
                 }
 
-                Console.WriteLine($"Current parking spot for {regNumber} is {currentSpotIndex}");
+                Console.WriteLine($"Vehicle '{regNumber}' is registered to spot '{currentSpotIndex}'");
                 int newSpotIndex;
 
                 bool isValidtoCheckOut = true;
@@ -345,7 +338,7 @@ namespace Prague_Parking_V2
                             // Flytta
                             newSpot.parkingSpot.Add(vehicleToMove);
                             newSpot.CurrentSize += vehicleToMove.Size;
-                            Console.WriteLine($"Vehicle {regNumber} moved to spot {newSpotIndex}");
+                            Console.WriteLine($"Vehicle '{regNumber}' moved to spot '{newSpotIndex}'");
 
                             // Spara och update
                             SaveParkingSpots();
@@ -378,7 +371,7 @@ namespace Prague_Parking_V2
                         TimeSpan duration = currentTime - vehicle.ParkingTime;
                         double price = CalculateParkingCost(vehicle, duration);
 
-                        Console.WriteLine($" Vehicle found in parkingspot {i}.");
+                        Console.WriteLine($" Vehicle '{regnumber}' is registered to spot '{i}'");
                         Console.WriteLine($" Park Duration:{duration.TotalMinutes:F1} minutes");
                         Console.WriteLine($" Parking Cost {price:F2} CZK");
                         found = true;
@@ -429,21 +422,10 @@ namespace Prague_Parking_V2
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                     }
-
-
                     Console.Write(" X ");
-
                     Console.ResetColor();
-
-
                 }
-
-
-
-
-
                 Console.WriteLine("\n\n==============================");
-
             }
             void ShowDetailedParkingSpaces()
             {
@@ -507,15 +489,12 @@ namespace Prague_Parking_V2
                     ParkingGarage newPragueParking = new ParkingGarage(newConfigValues.mcPrize, newConfigValues.carPrize, newConfigValues.garageSize);
                     pragueParking = newPragueParking;
                     ParkingSpot[] newParkeringsPlatser = new ParkingSpot[pragueParking.GarageSize];
-
                     Array.Copy(parkeringsPlatser, newParkeringsPlatser, parkeringsPlatser.Length);
-
                     for (int i = parkeringsPlatser.Length; i < newParkeringsPlatser.Length; i++)
                     {
                         newParkeringsPlatser[i] = new ParkingSpot(0);
                     }
                     parkeringsPlatser = newParkeringsPlatser;
-
                 }
                 SaveParkingSpots();
             }
