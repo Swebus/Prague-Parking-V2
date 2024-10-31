@@ -18,7 +18,7 @@ namespace PragueParkingClassLibrary
             { 
                 if (parkingSpots[i].TakeVehicle(this))
                 {
-                    Console.WriteLine("Fordon {0} registrerad på plats {1}", this.RegNumber, i);
+                    Console.WriteLine("Vehicle '{0}' registered to spot '{1}'", this.RegNumber, i);
                     return true;
                 }
             }
