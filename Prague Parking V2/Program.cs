@@ -197,7 +197,7 @@ namespace Prague_Parking_V2
                 // Be om registreringsnummer
                 do
                 {
-                    Console.WriteLine("Enter Registration Number:  ");
+                    Console.Write("Enter Registration Number:  ");
                     regNumber = Console.ReadLine().Trim();
                     if (string.IsNullOrEmpty(regNumber))
                     {
@@ -279,7 +279,7 @@ namespace Prague_Parking_V2
 
                 do
                 {
-                    Console.WriteLine("Enter registration number:  ");
+                    Console.Write("Enter registration number:  ");
                     regNumber = Console.ReadLine().Trim();
                     if (string.IsNullOrEmpty(regNumber))
                     {
@@ -358,10 +358,10 @@ namespace Prague_Parking_V2
             }
             void FindVehicle()
             {
-                Console.Write("To find vehicle enter regnumber");
-                String regnumber = Console.ReadLine()?.Trim().ToUpper();
+                Console.Write("Enter registration number: ");
+                String regnumber = Console.ReadLine()?.Trim();
                 bool found = false;
-                for (int i = 0; i < parkeringsPlatser.Length; i++)
+                for (int i = 1; i < parkeringsPlatser.Length; i++)
                 {
                     var Spot = parkeringsPlatser[i];
                     var vehicle = Spot?.parkingSpot.FirstOrDefault(v => v.RegNumber == regnumber);
@@ -405,7 +405,7 @@ namespace Prague_Parking_V2
             void ShowParkingSpaces()
             {
 
-                int emptyCount = 0;
+                int emptyCount = -1;
                 int halfFullCount = 0;
                 int fullCunt = 0;
 
@@ -610,7 +610,7 @@ namespace Prague_Parking_V2
             void TableStatusVehicle()
             {
                 Table table = new Table();
-                table.AddColumns("[white]EMPTY SPOT[/]",
+                table.AddColumns("[green]EMPTY SPOT[/]",
                                         "[yellow]HALF FULL[/]",
                                         "[red]FULL SPOT[/]")
                                         .Collapse().Centered().Expand();
