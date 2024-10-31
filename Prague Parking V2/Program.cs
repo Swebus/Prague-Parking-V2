@@ -34,13 +34,10 @@ namespace Prague_Parking_V2
             ReloadConfigFile();
 
 
-
             bool exit = false;
             while (!exit)
             {
                 FigletPagrueParking();
-
-                TableStatusVehicle();
 
                 ShowParkingSpaces();
 
@@ -98,6 +95,7 @@ namespace Prague_Parking_V2
                         }
                     case "Show Detailed Spaces":
                         {
+                            Console.Clear();
                             ShowDetailedParkingSpaces();
                             break;
                         }
@@ -116,6 +114,8 @@ namespace Prague_Parking_V2
                     Console.Clear();
                 }
             }
+            
+            
             void ParkVehicle()
             {
                 int type = ChooseVehicleType();
@@ -391,7 +391,6 @@ namespace Prague_Parking_V2
                     Console.WriteLine("Vehicle not found.");
                 }
             }
-
             double CalculateParkingCost(Vehicle vehicle, TimeSpan duration)
             {
                 const double freetime = 10;
@@ -410,62 +409,125 @@ namespace Prague_Parking_V2
                 }
 
             }
-
-
-
             void ShowParkingSpaces()
             {
 
-                Console.WriteLine("==============================");
+                int emptyCount = 0;
+                int halfFullCount = 0;
+                int fullCunt = 0;
 
-                for (int i = 1; i < parkeringsPlatser.Length; i++)
+                foreach (var spot in parkeringsPlatser)
                 {
-                    if ((i - 1) % 10 == 0)
+                    if (spot.CurrentSize == 0)
                     {
-                        Console.WriteLine("");
+                        emptyCount++;
                     }
-                    if (parkeringsPlatser[i].CurrentSize == parkeringsPlatser[i].MaxSize)
+                    else if (spot.CurrentSize < spot.MaxSize)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        halfFullCount++;
                     }
-                    else if (parkeringsPlatser[i].CurrentSize < parkeringsPlatser[i].MaxSize && parkeringsPlatser[i].CurrentSize > 00)
+                    else if (spot.CurrentSize == spot.MaxSize)
                     {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        fullCunt++;
                     }
-
-
-                    Console.Write(" X ");
-
-                    Console.ResetColor();
-
-
                 }
 
+                var chart = new BreakdownChart()
+                    .FullSize()
+                    .AddItem("Empty", emptyCount, Color.Green)
+                    .AddItem("Half Full", halfFullCount, Color.Yellow)
+                    .AddItem("Full", fullCunt, Color.Red);
+                AnsiConsole.Write(new Markup("[grey bold]Parking Space[/]\n"));
+                AnsiConsole.Write(chart);
 
 
 
+                //Console.WriteLine("==============================");
 
-                Console.WriteLine("\n\n==============================");
+                //for (int i = 1; i < parkeringsPlatser.Length; i++)
+                //{
+                //    if ((i - 1) % 10 == 0)
+                //    {
+                //        Console.WriteLine("");
+                //    }
+                //    if (parkeringsPlatser[i].CurrentSize == parkeringsPlatser[i].MaxSize)
+                //    {
+                //        Console.ForegroundColor = ConsoleColor.Red;
+                //    }
+                //    else if (parkeringsPlatser[i].CurrentSize < parkeringsPlatser[i].MaxSize && parkeringsPlatser[i].CurrentSize > 00)
+                //    {
+                //        Console.ForegroundColor = ConsoleColor.Yellow;
+                //    }
+
+                //    Console.Write(" X ");
+
+                //    Console.ResetColor();
+
+                //}
+                //Console.WriteLine("\n\n==============================");
 
             }
             void ShowDetailedParkingSpaces()
             {
-                for (int i = 1; i < parkeringsPlatser.Length; i++)
+                FigletPagrueParking();
+                TableStatusVehicle();
+                int columns = 5;
+                int rows = 1;
+                int columnWide = 20;
+
+                Console.WriteLine("Parking Overview: \n");
+
+                for (int i = 1; i <= 100; i++)
                 {
+                    if (rows > columns)
+                    {
+                        Console.WriteLine();
+                        rows = 1;
+                    }
+
+
+                    string status = $"{i}: Unknown\t";
+                    ConsoleColor color = ConsoleColor.Gray;
+
                     if (parkeringsPlatser[i].CurrentSize == 0)
                     {
-                        Console.WriteLine("{0}: Empty", i);
+                        status = $"{i}: Empty\t";
+                        color = ConsoleColor.Green;
                     }
                     else
                     {
-                        Console.Write("{0}: ", i);
-                        for (int j = 0; j < parkeringsPlatser[i].parkingSpot.Count; j++)
+                    
+                        int vechicleCount = parkeringsPlatser[i].parkingSpot.Count;
+
+                        if (vechicleCount == 2)
                         {
-                            Console.Write($"{parkeringsPlatser[i].parkingSpot[j].RegNumber} || ");
+                            status = $"{i}: Occupied\t";
+                            color = ConsoleColor.Red;
                         }
-                        Console.WriteLine("");
+                        else if (vechicleCount == 1)
+                        {
+                            
+                            // tagit från show Parking Space
+                            if (parkeringsPlatser[i].CurrentSize < parkeringsPlatser[i].MaxSize && parkeringsPlatser[i].CurrentSize > 00)
+                            {
+                                status = $"{i}: Half Full\t";
+                                color = ConsoleColor.Yellow;
+                            }
+                            else
+                            {
+                                status = $"{i}: Occupied\t";
+                                color = ConsoleColor.Red;
+                            }
+                        }
+
                     }
+                    Console.ForegroundColor = color;
+                    Console.Write(status.PadLeft(columnWide));
+                    Console.ResetColor();
+                    
+                    rows++;
                 }
+                Console.WriteLine("\n");
             }
             void SaveParkingSpots()
             {
@@ -558,10 +620,10 @@ namespace Prague_Parking_V2
             void TableStatusVehicle()
             {
                 Table table = new Table();
-                table.AddColumns("[grey]EMPTY SPOT =[/] [grey]WHITE[/]",
-                                        "[grey]HALF FULL =[/] [yellow]YELLOW[/]",
-                                        "[grey]FULL SPOT =[/] [red]RED[/]")
-                                        .Collapse();
+                table.AddColumns("[white]EMPTY SPOT[/]",
+                                        "[yellow]HALF FULL[/]",
+                                        "[red]FULL SPOT[/]")
+                                        .Collapse().Centered().Expand();
                 AnsiConsole.Write(table);
             }
             void TablePriceMeny()
@@ -597,6 +659,7 @@ namespace Prague_Parking_V2
                 }
             }
         }
+
     }
 
 }
