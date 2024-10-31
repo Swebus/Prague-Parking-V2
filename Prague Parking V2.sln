@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prague Parking V2", "Prague Parking V2\Prague Parking V2.csproj", "{84801D75-C234-45C4-9E4F-8495A326CD1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Prague Parking V2", "Prague Parking V2\Prague Parking V2.csproj", "{84801D75-C234-45C4-9E4F-8495A326CD1C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PragueParkingClassLibrary", "..\PragueParkingClassLibrary\PragueParkingClassLibrary\PragueParkingClassLibrary.csproj", "{8AE8ADDF-FA96-45E0-958A-C971B8D21074}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PragueParkingTests", "PragueParkingTests\PragueParkingTests.csproj", "{0061EFED-4A0B-42CF-9C72-6BF085248189}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PragueParkingTests", "PragueParkingTests\PragueParkingTests.csproj", "{0061EFED-4A0B-42CF-9C72-6BF085248189}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PragueParkingClassLibrarySol", "PragueParkingClassLibrarySol\PragueParkingClassLibrarySol.csproj", "{4F3D43BB-93BB-45C4-9076-946EF97FA729}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,14 @@ Global
 		{84801D75-C234-45C4-9E4F-8495A326CD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84801D75-C234-45C4-9E4F-8495A326CD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84801D75-C234-45C4-9E4F-8495A326CD1C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AE8ADDF-FA96-45E0-958A-C971B8D21074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AE8ADDF-FA96-45E0-958A-C971B8D21074}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AE8ADDF-FA96-45E0-958A-C971B8D21074}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AE8ADDF-FA96-45E0-958A-C971B8D21074}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0061EFED-4A0B-42CF-9C72-6BF085248189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0061EFED-4A0B-42CF-9C72-6BF085248189}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0061EFED-4A0B-42CF-9C72-6BF085248189}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0061EFED-4A0B-42CF-9C72-6BF085248189}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F3D43BB-93BB-45C4-9076-946EF97FA729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3D43BB-93BB-45C4-9076-946EF97FA729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3D43BB-93BB-45C4-9076-946EF97FA729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3D43BB-93BB-45C4-9076-946EF97FA729}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

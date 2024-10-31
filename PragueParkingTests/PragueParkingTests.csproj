@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PragueParkingClassLibrary\PragueParkingClassLibrary\PragueParkingClassLibrary.csproj" />
+    <ProjectReference Include="..\PragueParkingClassLibrarySol\PragueParkingClassLibrarySol.csproj" />
   </ItemGroup>
 
   <ItemGroup>
