@@ -10,28 +10,30 @@ namespace Prague_Parking_V2
         {
             string filepath = "../../../";
             //int oldGarageSize;
-            var configValues = ReadConfigTxt();
-            ParkingGarage pragueParking = new ParkingGarage(configValues.mcPrize, configValues.carPrize, configValues.garageSize);
-
-            ParkingSpot[] parkeringsPlatser;
-            if (File.Exists(filepath + "ParkingArray.json"))
-            {
-                string parkingJsonString = File.ReadAllText(filepath + "ParkingArray.json");
-                parkeringsPlatser = JsonSerializer.Deserialize<ParkingSpot[]>(parkingJsonString);
-            }
-            else
-            {
-                DateTime testDateTime = DateTime.Now;
-                parkeringsPlatser = new ParkingSpot[pragueParking.GarageSize];
-                for (int i = 0; i < parkeringsPlatser.Length; i++)
-                {
-                    parkeringsPlatser[i] = new ParkingSpot(0);
-                }
-                Car testCar = new Car("test123", testDateTime);
-                Mc testMc = new Mc("test456", testDateTime);
-                SaveParkingSpots();
-            }
-            ReloadConfigFile();
+            //var configValues = ReadConfigTxt();
+            ParkingGarage pragueParking = new ParkingGarage();
+            ParkingSpot[] parkingSpots = pragueParking.ReadParkingSpotsFromJson();
+            parkingSpots = pragueParking.GarageSizeChange(parkingSpots);
+            SaveParkingSpots();
+            //ParkingSpot[] parkeringsPlatser;
+            //if (File.Exists(filepath + "ParkingArray.json"))
+            //{
+            //    string parkingJsonString = File.ReadAllText(filepath + "ParkingArray.json");
+            //    parkeringsPlatser = JsonSerializer.Deserialize<ParkingSpot[]>(parkingJsonString);
+            //}
+            //else
+            //{
+            //    DateTime testDateTime = DateTime.Now;
+            //    parkeringsPlatser = new ParkingSpot[pragueParking.GarageSize];
+            //    for (int i = 0; i < parkeringsPlatser.Length; i++)
+            //    {
+            //        parkeringsPlatser[i] = new ParkingSpot(0);
+            //    }
+            //    Car testCar = new Car("test123", testDateTime);
+            //    Mc testMc = new Mc("test456", testDateTime);
+            //    SaveParkingSpots();
+            //}
+            ////ReloadConfigFile();
 
 
             bool exit = false;
@@ -83,7 +85,7 @@ namespace Prague_Parking_V2
                         }
                     case "Reload Config File":
                         {
-                            ReloadConfigFile();
+                            ReloadConfigFile(); 
                             break;
                         }
                     case "Clear Garage":
@@ -128,7 +130,7 @@ namespace Prague_Parking_V2
                     DateTime parkingTime = DateTime.Now;
                     Car newCar = new Car(regNumber, parkingTime);
 
-                    newCar.ParkVehicle(parkeringsPlatser);
+                    newCar.ParkVehicle(parkingSpots);
                     SaveParkingSpots();
                 }
                 else if (type == 2)     //type 2 = Mc
@@ -141,7 +143,7 @@ namespace Prague_Parking_V2
                     DateTime parkingTime = DateTime.Now;
                     Mc newMc = new Mc(regNumber, parkingTime);
 
-                    newMc.ParkVehicle(parkeringsPlatser);
+                    newMc.ParkVehicle(parkingSpots);
                     SaveParkingSpots();
                 }
             }
@@ -178,7 +180,7 @@ namespace Prague_Parking_V2
                         Console.WriteLine("\nInvalid, please try again.");
                         continue;
                     }
-                    bool regNumberExists = parkeringsPlatser.Any(spot => spot.ContainsVehicle(regNumber));
+                    bool regNumberExists = parkingSpots.Any(spot => spot.ContainsVehicle(regNumber));
 
                     if (regNumberExists)
                     {
@@ -214,9 +216,9 @@ namespace Prague_Parking_V2
                 Vehicle vehicleToRemove = null;
                 int currentSpotIndex = -1;
 
-                for (int i = 1; i < parkeringsPlatser.Length; i++)
+                for (int i = 1; i < parkingSpots.Length; i++)
                 {
-                    var spot = parkeringsPlatser[i];
+                    var spot = parkingSpots[i];
                     vehicleToRemove = spot.parkingSpot.FirstOrDefault(v => v.RegNumber == regNumber);
 
                     if (vehicleToRemove != null)
@@ -239,19 +241,21 @@ namespace Prague_Parking_V2
                 DateTime currentTime = DateTime.Now;
                 TimeSpan parkingDuration = currentTime - vehicleToRemove.ParkingTime;
 
+                double price = CalculateParkingCost(vehicleToRemove, parkingDuration);
+
                 // Anta att de första 10 minuterna är gratis
-                double price = 0;
-                if (parkingDuration.TotalMinutes > 10)
-                {
-                    if (vehicleToRemove.Size == 4)
-                    {
-                        price = (parkingDuration.TotalMinutes - 10) * pragueParking.CarPrize / 60;
-                    }
-                    else if (vehicleToRemove.Size == 2)
-                    {
-                        price = (parkingDuration.TotalMinutes - 10) * pragueParking.McPrize / 60;
-                    }
-                }
+                //double price = 0;
+                //if (parkingDuration.TotalMinutes > 10)
+                //{
+                //    if (vehicleToRemove.Size == 4)
+                //    {
+                //        price = (parkingDuration.TotalMinutes - 10) * pragueParking.CarPrize / 60;
+                //    }
+                //    else if (vehicleToRemove.Size == 2)
+                //    {
+                //        price = (parkingDuration.TotalMinutes - 10) * pragueParking.McPrize / 60;
+                //    }
+                //}
 
                 Console.WriteLine($"Parking duration: {parkingDuration.TotalMinutes:F1} minutes.");
                 Console.WriteLine($"Parking cost: {price:F2}CZK");
@@ -297,9 +301,9 @@ namespace Prague_Parking_V2
                 int currentSpotIndex = -1;
 
                 // loop igenom för match regNum
-                for (int i = 1; i < parkeringsPlatser.Length; i++)
+                for (int i = 1; i < parkingSpots.Length; i++)
                 {
-                    var spot = parkeringsPlatser[i];
+                    var spot = parkingSpots[i];
                     vehicleToMove = spot.parkingSpot.FirstOrDefault(Vehicle => Vehicle.RegNumber == regNumber);
                     if (vehicleToMove != null)
                     {
@@ -325,9 +329,9 @@ namespace Prague_Parking_V2
 
                     Console.Write("Enter new parking spot number: ");
 
-                    if (int.TryParse(Console.ReadLine(), out newSpotIndex) && newSpotIndex > 0 && newSpotIndex < parkeringsPlatser.Length)
+                    if (int.TryParse(Console.ReadLine(), out newSpotIndex) && newSpotIndex > 0 && newSpotIndex < parkingSpots.Length)
                     {
-                        var newSpot = parkeringsPlatser[newSpotIndex];
+                        var newSpot = parkingSpots[newSpotIndex];
 
                         if (newSpot.CurrentSize + vehicleToMove.Size <= newSpot.MaxSize)
                         {
@@ -361,9 +365,9 @@ namespace Prague_Parking_V2
                 Console.Write("Enter registration number: ");
                 String regnumber = Console.ReadLine()?.Trim();
                 bool found = false;
-                for (int i = 1; i < parkeringsPlatser.Length; i++)
+                for (int i = 1; i < parkingSpots.Length; i++)
                 {
-                    var Spot = parkeringsPlatser[i];
+                    var Spot = parkingSpots[i];
                     var vehicle = Spot?.parkingSpot.FirstOrDefault(v => v.RegNumber == regnumber);
                     if (vehicle != null)
                     {
@@ -387,6 +391,7 @@ namespace Prague_Parking_V2
             double CalculateParkingCost(Vehicle vehicle, TimeSpan duration)
             {
                 const double freetime = 10;
+                double rate = 0;
                 //const double hourlyRateCar = 20.0;
                 //const double hourlyRateMc = 10.0;
 
@@ -396,11 +401,16 @@ namespace Prague_Parking_V2
                 }
                 else
                 {
-                    double rate = vehicle is Car ? pragueParking.CarPrize : pragueParking.McPrize;
-                    return ((duration.TotalMinutes - freetime) / 60) * rate;
-
+                    if (vehicle.Size == 2)
+                    {
+                        rate = pragueParking.McPrize;
+                    }
+                    else if (vehicle.Size == 4)
+                    {
+                        rate = pragueParking.CarPrize;
+                    }
                 }
-
+                return ((duration.TotalMinutes - freetime) / 60) * rate;
             }
             void ShowParkingSpaces()
             {
@@ -409,7 +419,7 @@ namespace Prague_Parking_V2
                 int halfFullCount = 0;
                 int fullCunt = 0;
 
-                foreach (var spot in parkeringsPlatser)
+                foreach (var spot in parkingSpots)
                 {
                     if (spot.CurrentSize == 0)
                     {
@@ -432,33 +442,6 @@ namespace Prague_Parking_V2
                     .AddItem("Full", fullCunt, Color.Red);
                 AnsiConsole.Write(new Markup("[grey bold]Parking Space[/]\n"));
                 AnsiConsole.Write(chart);
-
-
-
-                //Console.WriteLine("==============================");
-
-                //for (int i = 1; i < parkeringsPlatser.Length; i++)
-                //{
-                //    if ((i - 1) % 10 == 0)
-                //    {
-                //        Console.WriteLine("");
-                //    }
-                //    if (parkeringsPlatser[i].CurrentSize == parkeringsPlatser[i].MaxSize)
-                //    {
-                //        Console.ForegroundColor = ConsoleColor.Red;
-                //    }
-                //    else if (parkeringsPlatser[i].CurrentSize < parkeringsPlatser[i].MaxSize && parkeringsPlatser[i].CurrentSize > 00)
-                //    {
-                //        Console.ForegroundColor = ConsoleColor.Yellow;
-                //    }
-
-                //    Console.Write(" X ");
-
-                //    Console.ResetColor();
-
-                //}
-                //Console.WriteLine("\n\n==============================");
-
             }
             void ShowDetailedParkingSpaces()
             {
@@ -482,7 +465,7 @@ namespace Prague_Parking_V2
                     string status = $"{i}: Unknown\t";
                     ConsoleColor color = ConsoleColor.Gray;
 
-                    if (parkeringsPlatser[i].CurrentSize == 0)
+                    if (parkingSpots[i].CurrentSize == 0)
                     {
                         status = $"{i}: Empty\t";
                         color = ConsoleColor.Green;
@@ -490,7 +473,7 @@ namespace Prague_Parking_V2
                     else
                     {
                     
-                        int vechicleCount = parkeringsPlatser[i].parkingSpot.Count;
+                        int vechicleCount = parkingSpots[i].parkingSpot.Count;
 
                         if (vechicleCount == 2)
                         {
@@ -501,7 +484,7 @@ namespace Prague_Parking_V2
                         {
                             
                             // tagit från show Parking Space
-                            if (parkeringsPlatser[i].CurrentSize < parkeringsPlatser[i].MaxSize && parkeringsPlatser[i].CurrentSize > 00)
+                            if (parkingSpots[i].CurrentSize < parkingSpots[i].MaxSize && parkingSpots[i].CurrentSize > 00)
                             {
                                 status = $"{i}: Half Full\t";
                                 color = ConsoleColor.Yellow;
@@ -524,78 +507,81 @@ namespace Prague_Parking_V2
             }
             void SaveParkingSpots()
             {
-                string updatedParkingArrayJsonString = JsonSerializer.Serialize(parkeringsPlatser, new JsonSerializerOptions { WriteIndented = true });
+                string updatedParkingArrayJsonString = JsonSerializer.Serialize(parkingSpots, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(filepath + "ParkingArray.json", updatedParkingArrayJsonString);
             }
             void ReloadConfigFile()
             {
-                //oldGarageSize = parkeringsPlatser.Length;
-                bool isEmpty = true;
-
-                for (int i = 0; i < parkeringsPlatser.Length; i++)
-                {
-                    if (parkeringsPlatser[i].CurrentSize > 0)
-                    {
-                        isEmpty = false;
-                        break;
-                    }
-                }
-
-                var newConfigValues = ReadConfigTxt();
-
-
-                if (newConfigValues.garageSize < parkeringsPlatser.Length && isEmpty == false)
-                {
-                    ParkingGarage pragueParking = new ParkingGarage(newConfigValues.mcPrize, configValues.carPrize, parkeringsPlatser.Length);
-                    Console.WriteLine("Garage not empty, number of spots remains the same. \n" +
-                        "Please empty the garage before decreasing its size.");
-                }
-                else if (newConfigValues.garageSize < parkeringsPlatser.Length && isEmpty == true)
-                {
-                    ParkingGarage newPragueParking = new ParkingGarage(newConfigValues.mcPrize, newConfigValues.carPrize, newConfigValues.garageSize);
-                    pragueParking = newPragueParking;
-                    parkeringsPlatser = new ParkingSpot[pragueParking.GarageSize];
-                    for (int i = 0; i < parkeringsPlatser.Length; i++)
-                    {
-                        parkeringsPlatser[i] = new ParkingSpot(0);
-                    }
-                }
-                else
-                {
-                    ParkingGarage newPragueParking = new ParkingGarage(newConfigValues.mcPrize, newConfigValues.carPrize, newConfigValues.garageSize);
-                    pragueParking = newPragueParking;
-                    ParkingSpot[] newParkeringsPlatser = new ParkingSpot[pragueParking.GarageSize];
-                    Array.Copy(parkeringsPlatser, newParkeringsPlatser, parkeringsPlatser.Length);
-                    for (int i = parkeringsPlatser.Length; i < newParkeringsPlatser.Length; i++)
-                    {
-                        newParkeringsPlatser[i] = new ParkingSpot(0);
-                    }
-                    parkeringsPlatser = newParkeringsPlatser;
-                }
+                pragueParking.ReloadConfigTxt();
+                parkingSpots = pragueParking.GarageSizeChange(parkingSpots);
                 SaveParkingSpots();
-            }
-            (int mcPrize, int carPrize, int garageSize) ReadConfigTxt()
-            {
-                var configValues = new Dictionary<string, int>();
+                ////oldGarageSize = parkeringsPlatser.Length;
+                //bool isEmpty = true;
 
-                foreach (var line in File.ReadLines(filepath + "Config.txt"))
-                {
-                    if (string.IsNullOrEmpty(line) || line.TrimStart().StartsWith("#")) continue;
+                //for (int i = 0; i < parkeringsPlatser.Length; i++)
+                //{
+                //    if (parkeringsPlatser[i].CurrentSize > 0)
+                //    {
+                //        isEmpty = false;
+                //        break;
+                //    }
+                //}
 
-                    var parts = line.Split(new[] { '=' }, 2);
-                    if (parts.Length == 2)
-                    {
-                        string key = parts[0].Trim();
-                        string value = parts[1].Trim().Split('#')[0].Trim();
-                        configValues[key] = int.Parse(value);
-                    }
-                }
+                //var newConfigValues = ReadConfigTxt();
 
-                configValues.TryGetValue("McPrize", out int mcPrize);
-                configValues.TryGetValue("CarPrize", out int carPrize);
-                configValues.TryGetValue("GarageSize", out int garageSize);
 
-                return (mcPrize, carPrize, garageSize);
+                //if (newConfigValues.garageSize < parkeringsPlatser.Length && isEmpty == false)
+                //{
+                //    ParkingGarage pragueParking = new ParkingGarage(newConfigValues.mcPrize, configValues.carPrize, parkeringsPlatser.Length);
+                //    Console.WriteLine("Garage not empty, number of spots remains the same. \n" +
+                //        "Please empty the garage before decreasing its size.");
+                //}
+                //else if (newConfigValues.garageSize < parkeringsPlatser.Length && isEmpty == true)
+                //{
+                //    ParkingGarage newPragueParking = new ParkingGarage(newConfigValues.mcPrize, newConfigValues.carPrize, newConfigValues.garageSize);
+                //    pragueParking = newPragueParking;
+                //    parkeringsPlatser = new ParkingSpot[pragueParking.GarageSize];
+                //    for (int i = 0; i < parkeringsPlatser.Length; i++)
+                //    {
+                //        parkeringsPlatser[i] = new ParkingSpot(0);
+                //    }
+                //}
+                //else
+                //{
+                //    ParkingGarage newPragueParking = new ParkingGarage(newConfigValues.mcPrize, newConfigValues.carPrize, newConfigValues.garageSize);
+                //    pragueParking = newPragueParking;
+                //    ParkingSpot[] newParkeringsPlatser = new ParkingSpot[pragueParking.GarageSize];
+                //    Array.Copy(parkeringsPlatser, newParkeringsPlatser, parkeringsPlatser.Length);
+                //    for (int i = parkeringsPlatser.Length; i < newParkeringsPlatser.Length; i++)
+                //    {
+                //        newParkeringsPlatser[i] = new ParkingSpot(0);
+                //    }
+                //    parkeringsPlatser = newParkeringsPlatser;
+                //}
+                //SaveParkingSpots();
+                //}
+                //(int mcPrize, int carPrize, int garageSize) ReadConfigTxt()
+                //{
+                //    var configValues = new Dictionary<string, int>();
+
+                //    foreach (var line in File.ReadLines(filepath + "Config.txt"))
+                //    {
+                //        if (string.IsNullOrEmpty(line) || line.TrimStart().StartsWith("#")) continue;
+
+                //        var parts = line.Split(new[] { '=' }, 2);
+                //        if (parts.Length == 2)
+                //        {
+                //            string key = parts[0].Trim();
+                //            string value = parts[1].Trim().Split('#')[0].Trim();
+                //            configValues[key] = int.Parse(value);
+                //        }
+                //    }
+
+                //    configValues.TryGetValue("McPrize", out int mcPrize);
+                //    configValues.TryGetValue("CarPrize", out int carPrize);
+                //    configValues.TryGetValue("GarageSize", out int garageSize);
+
+                //    return (mcPrize, carPrize, garageSize);
             }
             // Top MainMeny Design
             #region 
@@ -636,10 +622,10 @@ namespace Prague_Parking_V2
                      .PageSize(4).AddChoices(new[] { "Yes", "No" }));
                 if (confirm == "Yes")
                 {
-                    for (int i = 1; i < parkeringsPlatser.Length; i++)
+                    for (int i = 1; i < parkingSpots.Length; i++)
                     {
-                        parkeringsPlatser[i].parkingSpot.Clear();
-                        parkeringsPlatser[i].CurrentSize = 0;
+                        parkingSpots[i].parkingSpot.Clear();
+                        parkingSpots[i].CurrentSize = 0;
                     }
                     SaveParkingSpots();
                 }
@@ -649,6 +635,5 @@ namespace Prague_Parking_V2
                 }
             }
         }
-
     }
 }
