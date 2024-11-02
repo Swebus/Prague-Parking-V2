@@ -10,7 +10,44 @@
     "CurrentSize": 0
   },
   {
+    "parkingSpot": [
+      {
+        "RegNumber": "qqq",
+        "ParkingTime": "2024-10-31T11:35:51.8400909+01:00",
+        "Size": 2
+      },
+      {
+        "RegNumber": "www",
+        "ParkingTime": "2024-10-31T11:35:57.6599651+01:00",
+        "Size": 2
+      }
     "parkingSpot": [],
+    "MaxSize": 4,
+    "CurrentSize": 0
+  },
+  {
+    "parkingSpot": [],
+    "CurrentSize": 0
+  },
+  {
+    "parkingSpot": [
+      {
+        "RegNumber": "fjp148",
+        "ParkingTime": "2024-10-31T22:09:43.1232234+01:00",
+        "Size": 4
+      }
+    ],
+    "MaxSize": 4,
+    "CurrentSize": 4
+  },
+  {
+    "parkingSpot": [
+      {
+        "RegNumber": "aaaccc",
+        "ParkingTime": "2024-10-31T22:12:51.6902452+01:00",
+        "Size": 4
+      }
+    ],
     "MaxSize": 4,
     "CurrentSize": 0
   },
@@ -240,19 +277,15 @@
     "CurrentSize": 0
   },
   {
-    "parkingSpot": [],
+    "parkingSpot": [
+      {
+        "RegNumber": "aaa111",
+        "ParkingTime": "2024-11-01T14:46:15.0874366+01:00",
+        "Size": 4
+      }
+    ],
     "MaxSize": 4,
-    "CurrentSize": 0
-  },
-  {
-    "parkingSpot": [],
-    "MaxSize": 4,
-    "CurrentSize": 0
-  },
-  {
-    "parkingSpot": [],
-    "MaxSize": 4,
-    "CurrentSize": 0
+    "CurrentSize": 4
   },
   {
     "parkingSpot": [],
