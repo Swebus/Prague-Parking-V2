@@ -11,7 +11,7 @@
         "ParkingTime": "2024-11-03T00:49:18.9470363+01:00",
         "Size": 4
       }
-    ],
+    "parkingSpot": [],
     "MaxSize": 4,
     "CurrentSize": 4
   },
