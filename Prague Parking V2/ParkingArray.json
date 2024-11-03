@@ -7,24 +7,18 @@
   {
     "parkingSpot": [
       {
-        "RegNumber": "abc123",
-        "ParkingTime": "2024-11-03T00:49:18.9470363+01:00",
-        "Size": 4
-      }
-    "parkingSpot": [],
-    "MaxSize": 4,
-    "CurrentSize": 4
-  },
-  {
-    "parkingSpot": [
-      {
-        "RegNumber": "HejHoppGum",
-        "ParkingTime": "2024-11-03T00:50:03.7166298+01:00",
+        "RegNumber": "123",
+        "ParkingTime": "2024-11-03T15:46:50.1573599+01:00",
         "Size": 4
       }
     ],
     "MaxSize": 4,
     "CurrentSize": 4
+  },
+  {
+    "parkingSpot": [],
+    "MaxSize": 4,
+    "CurrentSize": 0
   },
   {
     "parkingSpot": [],
