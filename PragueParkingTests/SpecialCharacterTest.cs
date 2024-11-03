@@ -7,31 +7,26 @@ namespace PragueParkingTests
         [TestMethod]
         public void StringDoesContainSpecialCharacter()
         {
-            //Arrange
-            var parkingGarage = new ParkingGarage(10, 10, 10);
+
+            var parkingGarage = new ParkingGarage();
             string stringToTest = "Test hej!";
             bool fromCall;
 
-            //Act
 
             fromCall = parkingGarage.ContainsSpecialCharacters(stringToTest);
 
-            //Assert
             Assert.IsTrue(fromCall);
         }
         [TestMethod]
         public void StringDoesNotContainSpecialCharacter()
         {
-            //Arrange
-            var parkingGarage = new ParkingGarage(10, 10, 10);
-            string stringToTest = "HejHoppGummiSnopp";
-            bool fromCall;
 
-            //Act
+            var parkingGarage = new ParkingGarage();
+            string stringToTest = "HejHopp";
+            bool fromCall;
 
             fromCall = parkingGarage.ContainsSpecialCharacters(stringToTest);
 
-            //Assert
             Assert.IsFalse(fromCall);
         }
     }

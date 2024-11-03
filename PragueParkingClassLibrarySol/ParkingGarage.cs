@@ -12,7 +12,7 @@ namespace PragueParkingClassLibrary
         public int GarageSize { get; set; }
 
 
-        public ParkingGarage()
+        public ParkingGarage()                              //Läser in configfilen och ger sig själv sina värden utifrån det den läser in
         {
             string filepath = "../../../";
             var configValues = new Dictionary<string, int>();
@@ -39,15 +39,7 @@ namespace PragueParkingClassLibrary
             this.GarageSize = configGarageSize;
 
         }
-        public bool FileExists(string fileName)
-        {
-            if (string.IsNullOrEmpty(fileName))
-            {
-                throw new ArgumentNullException(nameof(fileName));
-            }
-            return File.Exists(fileName);
-        }
-        public void ReloadConfigTxt()
+        public void ReloadConfigTxt()              //Metod för att ladda om config värden medan programmet är igång
         {
             string filepath = "../../../";
             var configValues = new Dictionary<string, int>();
@@ -72,7 +64,9 @@ namespace PragueParkingClassLibrary
             this.CarPrize = configCarPrize;
             this.GarageSize = configGarageSize;
         }
-        public ParkingSpot[] GarageSizeChange(ParkingSpot[] input)
+        public ParkingSpot[] GarageSizeChange(ParkingSpot[] input)                           //Körs efter ReloadConfigTxt för att se om det skett en förändring i garagets storlek
+                                                                                             //Om det har det så gör den arrayen större om alla platser är tomma, annars inte
+                                                                                             //Det är den existerande arrayen som skickas in i metoden, så skickar den den nya tillbaka
         {
             bool isEmpty = true;
             ParkingSpot[] output;
@@ -109,7 +103,7 @@ namespace PragueParkingClassLibrary
             }
             return output;
         }
-        public ParkingSpot[] ReadParkingSpotsFromJson()
+        public ParkingSpot[] ReadParkingSpotsFromJson()                                                     //kopierar jsonfilen till arrayen, körs i början av programmet
         {
             string filepath = "../../../";
             ParkingSpot[] parkingSpots;
@@ -132,9 +126,18 @@ namespace PragueParkingClassLibrary
             }
             return parkingSpots;
         }
-        public bool ContainsSpecialCharacters(string regNumber)
+        public bool ContainsSpecialCharacters(string regNumber)                                              //inputvalidering
         {
             return Regex.IsMatch(regNumber, @"[^\p{L}\p{N}]");
+        }
+
+        public bool FileExists(string fileName)                                                                 //testmetod
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentNullException(nameof(fileName));
+            }
+            return File.Exists(fileName);
         }
     }
 }

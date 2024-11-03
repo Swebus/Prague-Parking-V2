@@ -16,7 +16,7 @@ namespace PragueParkingClassLibrary
         {
             for (int i = 1; i < parkingSpots.Length; i++)
             { 
-                if (parkingSpots[i].TakeVehicle(this))
+                if (parkingSpots[i].TakeVehicle(this))             //Provar att skicka fordonet till en parkeringsplats. Skickar tillbaka true om det gick bra
                 {
                     Console.WriteLine("Vehicle '{0}' registered to spot '{1}'", this.RegNumber, i);
                     return true;

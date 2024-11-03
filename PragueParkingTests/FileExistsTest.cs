@@ -9,7 +9,7 @@ namespace PragueParkingTests
         public void FileDoesExist()
         {
             
-            ParkingGarage pg = new ParkingGarage(5, 5, 11);
+            ParkingGarage pg = new ParkingGarage();
             string fileName = @"C:\Users\Sebastian\source\repos\Prague Parking V2\Prague Parking V2\Config.txt";
             bool fromCall;
 
@@ -23,8 +23,8 @@ namespace PragueParkingTests
         public void FileDoesNotExist()
         {
             string filePath = "../../../";
-            ParkingGarage pg = new ParkingGarage(5, 5, 11);
-            string fileName = filePath + "Config.txt";
+            ParkingGarage pg = new ParkingGarage();
+            string fileName = filePath + "HejHopp.txt";
             bool fromCall;
 
             TestContext?.WriteLine($"Checking for file: '{fileName}'");

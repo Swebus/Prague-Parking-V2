@@ -5,37 +5,21 @@
     "CurrentSize": 0
   },
   {
-    "parkingSpot": [],
-    "MaxSize": 4,
-    "CurrentSize": 0
-  },
-  {
     "parkingSpot": [
       {
-        "RegNumber": "aaa333",
-        "ParkingTime": "2024-11-01T14:46:36.463526+01:00",
-        "Size": 2
+        "RegNumber": "abc123",
+        "ParkingTime": "2024-11-03T00:49:18.9470363+01:00",
+        "Size": 4
       }
     ],
     "MaxSize": 4,
-    "CurrentSize": 2
+    "CurrentSize": 4
   },
   {
     "parkingSpot": [
       {
-        "RegNumber": "aaa444",
-        "ParkingTime": "2024-11-01T14:46:44.7665032+01:00",
-        "Size": 2
-      }
-    ],
-    "MaxSize": 4,
-    "CurrentSize": 2
-  },
-  {
-    "parkingSpot": [
-      {
-        "RegNumber": "aaa555",
-        "ParkingTime": "2024-11-01T14:46:50.3735554+01:00",
+        "RegNumber": "HejHoppGum",
+        "ParkingTime": "2024-11-03T00:50:03.7166298+01:00",
         "Size": 4
       }
     ],
@@ -268,15 +252,19 @@
     "CurrentSize": 0
   },
   {
-    "parkingSpot": [
-      {
-        "RegNumber": "aaa111",
-        "ParkingTime": "2024-11-01T14:46:15.0874366+01:00",
-        "Size": 4
-      }
-    ],
+    "parkingSpot": [],
     "MaxSize": 4,
-    "CurrentSize": 4
+    "CurrentSize": 0
+  },
+  {
+    "parkingSpot": [],
+    "MaxSize": 4,
+    "CurrentSize": 0
+  },
+  {
+    "parkingSpot": [],
+    "MaxSize": 4,
+    "CurrentSize": 0
   },
   {
     "parkingSpot": [],
