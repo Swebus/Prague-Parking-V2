@@ -8,9 +8,9 @@ namespace PragueParkingTests
         [TestMethod]
         public void FileDoesExist()
         {
-            
+            string filepath = "../../../";
             ParkingGarage pg = new ParkingGarage();
-            string fileName = @"C:\Users\Sebastian\source\repos\Prague Parking V2\Prague Parking V2\Config.txt";
+            string fileName = filepath + "Config.txt";
             bool fromCall;
 
             TestContext?.WriteLine($"Checking for file: '{fileName}'");
